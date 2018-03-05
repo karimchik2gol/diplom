@@ -1,0 +1,21 @@
+<%= form_with scope: :data, url: create_main_path do |f| %>
+	<div class="field">
+		<%= f.label :input, "Набор входных данных:" %><br/>
+		<%= f.text_field :input %>
+	</div>
+
+	<%= fields_for :attr do |checkbox_attribute| %>
+		<% @attributes.each do |attribute| %>
+			<div class="field">
+				<%= checkbox_attribute.label attribute, @attribute_labels[attribute] + ":" %><br/>
+				<%= checkbox_attribute.check_box attribute, checked: true %>
+			</div>
+		<% end %>
+	<% end %>
+
+	<button>Calculate</button>
+<% end %>
+
+<div class="statistic-results">
+
+</div>
