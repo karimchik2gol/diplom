@@ -9,7 +9,7 @@ class MainController < ApplicationController
 
   def create
   	@input_numbers = params[:data][:input].split(',').map { |obj| obj.to_i }
-    calc = Calculate.new(@input_numbers, permitted_params.to_h.map { |key, value| key if value == "1" })
+    calc = Calculate.new(@input_numbers, permitted_params.to_h.delete_if { |key, value| value == "0" }.map {|k,v| k})
 
   	el_count = @input_numbers.count
   	@results = calc.calculate
