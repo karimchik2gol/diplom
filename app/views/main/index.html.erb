@@ -1,21 +1,27 @@
-<%= form_with scope: :data, url: create_main_path do |f| %>
-	<div class="field">
-		<%= f.label :input, "Набор входных данных:" %><br/>
-		<%= f.text_field :input %>
-	</div>
+<div class="starter-template">
+	<h3 class="text-center m-b-10">Вычисление статистических параметров</h3>
+	<%= form_with scope: :data, url: create_main_path do |f| %>
+		<div class="field">
+			<%= f.text_field :input, placeholder: "Введите входные данные", class: "form-control main-input" %>
+		</div>
 
-	<%= fields_for :attr do |checkbox_attribute| %>
-		<% @attributes.each do |attribute| %>
-			<div class="field">
-				<%= checkbox_attribute.label attribute, @attribute_labels[attribute] + ":" %><br/>
-				<%= checkbox_attribute.check_box attribute, checked: true %>
-			</div>
-		<% end %>
+		<div class="row">
+			<%= fields_for :attr do |checkbox_attribute| %>
+				<% @attributes.each do |attribute| %>
+					<div class="field col-md-6">
+						<div class="checkbox">
+							<%= checkbox_attribute.label attribute do %>
+								<%= checkbox_attribute.check_box attribute, checked: true %>
+								<%= @attribute_labels[attribute] %>
+							<% end %>
+						</div>
+					</div>
+				<% end %>
+			<% end %>
+		</div>
+
+		<button class="btn btn-primary m-t-10">Calculate</button>
 	<% end %>
 
-	<button>Calculate</button>
-<% end %>
-
-<div class="statistic-results">
-
+	<div class="statistic-results"></div>
 </div>

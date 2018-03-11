@@ -1,12 +1,17 @@
 <div class="output">
-	<h3>Результаты вычислений:</h3>
+	<h3 class="text-center m-b-20">Результаты вычислений:</h3>
 
-	<% @results.each do |k, v| %>
-	  <p><%= @attribute_labels[k.to_sym] %>: <%= v || "Невозможно вычислить" %></p>
-	<% end %>
+	<div class="row m-b-30">
+		<% @results.each do |k, v| %>
+		  <p class="col-md-6"><%= @attribute_labels[k.to_sym] %>: <%= v || "Невозможно вычислить" %></p>
+		<% end %>
+	</div>
 
+
+	<h3 class="text-center m-b-20">График входных данных</h3>
 	<canvas id="inputData" width="300" height="100" data-input-numbers="<%= @input_numbers %>" data-input-labels="<%= @input_labels %>" data-mean="<%= @mean %>" data-standard_deviation="<%= @standard_deviation %>"></canvas>
 
+	<h3 class="text-center m-b-20">Гистограмма входных данных</h3>
 	<canvas id="historgramaInputData" width="300" height="100" data-input-numbers="<%= @input_numbers %>" data-input-labels="<%= @input_labels %>"></canvas>
 </div>
 
