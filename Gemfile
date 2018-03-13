@@ -55,3 +55,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'descriptive-statistics'
 gem 'chart-js-rails'
 gem 'bootstrap-sass'
+gem 'remotipart'

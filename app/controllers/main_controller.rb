@@ -9,13 +9,16 @@ class MainController < ApplicationController
 
   def create
   	@input_numbers = params[:data][:input].split(',').map { |obj| obj.to_i }
-    calc = Calculate.new(@input_numbers, permitted_params.to_h.delete_if { |key, value| value == "0" }.map {|k,v| k})
+    perm_par = permitted_params.to_h.delete_if { |key, value| value == "0" }.map {|k,v| k}
+    perm_par << "mean" << "standard_deviation" # Added by default!!
+    calc = Calculate.new(@input_numbers, perm_par)
 
-  	el_count = @input_numbers.count
-  	@results = calc.calculate
-  	@input_labels = Array.new(el_count) { |i| i }
-  	@mean = Array.new(el_count) { |i| @results["mean"] } if @results["mean"]
-  	@standard_deviation = Array.new(el_count) { |i| @results["standard_deviation"] } if @results["standard_deviation"]
+  	el_count = @input_numbers.count # Element count for graphic CHART JS
+  	@results = calc.calculate # Calculate statistic
+  	@input_labels = Array.new(el_count) { |i| i } # Chart js labels
+  	@mean = @results["mean"]
+  	@standard_deviation = @results["standard_deviation"]
+    @up_standard_deviation = 2 * @mean - @standard_deviation
   	render partial: "statistic"
   end
 

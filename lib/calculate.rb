@@ -3,15 +3,15 @@ class Calculate
   	[:mean, :median, :mode, :min, :max, :variance, :standard_deviation, :relative_standard_deviation, :skewness, :kurtosis]
 
   DATA_ATTRIBUTE_LABEL_NAMES = {
-	   mean: 'Среднее число',
-	   median: 'Медианна', 
+	   mean: 'Среднее значение',
+	   median: 'Медиана', 
 	   mode: 'Мода',
 	   min: 'Минимальное значение',
 	   max: 'Максимальное', 
 	   variance: 'Дисперсия', 
 	   standard_deviation: 'Стандартное отклонение',
 	   relative_standard_deviation: 'Относительное стандартное отклонение', 
-	   skewness: 'Ассиметрия', 
+	   skewness: 'Асимметрия', 
 	   kurtosis: 'Коэффициент эксцесса'
   }
  

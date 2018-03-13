@@ -1,27 +1,42 @@
 <div class="starter-template">
 	<h3 class="text-center m-b-10">Вычисление статистических параметров</h3>
-	<%= form_with scope: :data, url: create_main_path do |f| %>
-		<div class="field">
-			<%= f.text_field :input, placeholder: "Введите входные данные", class: "form-control main-input" %>
-		</div>
+	<div class="field m-b-20">
+		<%= label_tag :input, "Введите входные данные" %>
+		<%= file_field_tag :input, onchange: "handleFiles(this.files)" %>
+	</div>
 
-		<div class="row">
-			<%= fields_for :attr do |checkbox_attribute| %>
-				<% @attributes.each do |attribute| %>
-					<div class="field col-md-6">
-						<div class="checkbox">
-							<%= checkbox_attribute.label attribute do %>
-								<%= checkbox_attribute.check_box attribute, checked: true %>
-								<%= @attribute_labels[attribute] %>
+	<div class="tabs m-b-20">
+		<div class="tab btn btn-primary btn-secondary" data-tab-name="tab-option">Опции</div>
+		<div class="tab btn btn-secondary" data-tab-name="tab-statistic">Статистические параметры</div>
+		<div class="tab btn btn-secondary" data-tab-name="tab-graphic">График</div>
+		<div class="tab btn btn-secondary" data-tab-name="tab-spectre">Спектр</div>
+		<div class="tab btn btn-secondary" data-tab-name="tab-histogram">Гистограмма</div>
+	</div>
+
+	<div class="tabs-content">
+		<div class="tab-content active-tab-content tab-option">
+			<%= form_with scope: :data, url: create_main_path, class: 'input-data-form' do |f| %>	
+				<div class="field">
+					<%= f.hidden_field :input, id: 'hidden-data' %>
+				</div>
+
+				<div class="row">
+					<%= fields_for :attr do |checkbox_attribute| %>
+						<% @attributes.each do |attribute| %>
+							<% if ![:mean, :standard_deviation].include?(attribute) %>
+								<div class="field col-md-6">
+									<div class="checkbox">
+										<%= checkbox_attribute.label attribute do %>
+											<%= checkbox_attribute.check_box attribute, checked: true %>
+											<%= @attribute_labels[attribute] %>
+										<% end %>
+									</div>
+								</div>
 							<% end %>
-						</div>
-					</div>
-				<% end %>
+						<% end %>
+					<% end %>
+				</div>
 			<% end %>
 		</div>
-
-		<button class="btn btn-primary m-t-10">Calculate</button>
-	<% end %>
-
-	<div class="statistic-results"></div>
+	</div>
 </div>

@@ -11,3 +11,21 @@
 .m-b-30 {
 	margin-bottom: 30px;
 }
+.tabs {
+	border-bottom: 1px solid #337ab7;
+}
+.tab {
+	display: none;
+}
+.tab .btn-primary {
+	display: block;
+}
+.tabs .tab {
+	border-radius: 6px 6px 0 0;
+}
+.tab-content {
+	display: none;
+}
+.active-tab-content {
+	display: block;
+}
