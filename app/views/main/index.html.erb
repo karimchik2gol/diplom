@@ -1,16 +1,16 @@
+<%= render "menu" %>
+
 <div class="starter-template">
-	<h3 class="text-center m-b-10">Вычисление статистических параметров</h3>
+	<h3 class="text-left m-b-30">Вычисление статистических параметров</h3>
 	<div class="field m-b-20">
 		<%= label_tag :input, "Введите входные данные" %>
-		<%= file_field_tag :input, onchange: "handleFiles(this.files)" %>
+		<%= file_field_tag :input, onchange: "handleFilesStatistic(this.files)" %>
 	</div>
 
 	<div class="tabs m-b-20">
 		<div class="tab btn btn-primary btn-secondary" data-tab-name="tab-option">Опции</div>
 		<div class="tab btn btn-secondary" data-tab-name="tab-statistic">Статистические параметры</div>
 		<div class="tab btn btn-secondary" data-tab-name="tab-graphic">График</div>
-		<div class="tab btn btn-secondary" data-tab-name="tab-spectre">Спектр</div>
-		<div class="tab btn btn-secondary" data-tab-name="tab-histogram">Гистограмма</div>
 	</div>
 
 	<div class="tabs-content">

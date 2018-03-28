@@ -1,0 +1,20 @@
+<%= render "menu" %>
+
+<div class="starter-template">
+	<h3 class="text-left m-b-30">Анализ сигнала</h3>
+	<div class="field m-b-20">
+		<%= label_tag :input, "Введите входные данные" %>
+		<%= file_field_tag :input, onchange: "handleFilesSignal(this)" %>
+	</div>
+
+	<div class="tabs m-b-20">
+		<div class="tab btn btn-primary btn-secondary" data-tab-name="tab-graphic">График</div>
+		<div class="tab btn btn-secondary" data-tab-name="tab-spectrum">Спектр</div>
+		<div class="tab btn btn-secondary" data-tab-name="tab-histogram">Гистограмма</div>
+		<div class="tab btn btn-secondary" data-tab-name="tab-correlation">Корреляционная функция</div>
+	</div>
+
+
+	<div class="tabs-content">
+	</div>
+</div>

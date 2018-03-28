@@ -1,0 +1,43 @@
+<div class="tab-content tab-graphic">
+	<h3 class="text-center m-b-20">График сигнала</h3>
+
+	<canvas id="simple_graphic" width="280" height="100" 
+	data-input-numbers="<%= @graphic[1] %>" data-input-labels="<%= @graphic[0] %>"></canvas>
+</div>
+
+<div class="tab-content tab-spectrum">
+	<h3 class="text-center m-b-20">Спектр сигнала</h3>
+
+	<canvas id="simple_spectrum" width="280" height="100" 
+	data-input-numbers="<%= @graphic[2] %>" data-input-labels="<%= @graphic[0] %>"></canvas>
+</div>
+
+<div class="tab-content tab-histogram">
+	<h3 class="text-center m-b-20">Гистограмма сигнала</h3>
+
+	<canvas id="simple_histogram" width="280" height="100" 
+	data-input-numbers="<%= @graphic[3] %>" data-input-labels="<%= @graphic[4] %>"></canvas>
+</div>
+
+<div class="tab-content tab-correlation">
+	<h3 class="text-center m-b-20">Корреляционная функция</h3>
+
+	<canvas id="simple_correlation" width="280" height="100" 
+	data-input-numbers="<%= @graphic[5] %>" data-input-labels="<%= @graphic[0] %>"></canvas>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		sGraphic = $('#simple_graphic')
+		ssg(sGraphic.data('input-labels'), sGraphic.data('input-numbers'))
+
+		sSpectrum = $('#simple_spectrum')
+		sss(sSpectrum.data('input-labels'), sSpectrum.data('input-numbers'))
+
+		sHistorgram = $('#simple_histogram')
+		ssh(sHistorgram.data('input-labels'), sHistorgram.data('input-numbers'))
+
+		sCorrelation = $('#simple_correlation')
+		scg(sCorrelation.data('input-labels'), sCorrelation.data('input-numbers'))
+	})
+</script>

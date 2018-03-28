@@ -85,8 +85,8 @@
 
 
 # Input Data Spectre
-@ids = (inputLabels, inputNumbers) ->
-  ctx = document.getElementById('spectre').getContext('2d')
+@sss = (inputLabels, inputNumbers) ->
+  ctx = document.getElementById('simple_spectrum').getContext('2d')
   numberOfPointsRadiusSize = 3 - Math.log10(inputNumbers.length)
   chart = new Chart(ctx,
    type: 'bar'
@@ -100,7 +100,7 @@
    options: {
      scales: {
       xAxes: [{
-       barThickness: 1
+       barThickness: 2
        ticks:
          autoSkip: true
          maxTicksLimit: 24
@@ -115,6 +115,36 @@
       mode: 'xy'
      }
     })
+
+@ssh = (inputLabels, inputNumbers) ->
+  ctx = document.getElementById('simple_histogram').getContext('2d')
+  chart = new Chart(ctx,
+   type: 'bar'
+   data:
+    labels: inputLabels
+    datasets: [{
+      label: 'Входные данные'
+      backgroundColor: 'rgba(65, 118, 164, 1)'
+      data: inputNumbers
+    } ]
+   options: {
+     scales: {
+      xAxes: [{
+       ticks:
+         autoSkip: true
+         maxTicksLimit: 24
+      }]
+     }
+     pan: {
+      enabled: true
+      mode: 'xy'
+     }
+     zoom: {
+      enabled: true
+      mode: 'xy'
+     }
+    })
+
 
 # Input Data Histogramm
 @idh = (inputLabels, inputNumbers) ->
@@ -148,8 +178,67 @@
     })
 
 
-# FILE PARSE
-@handleFiles = (files) ->
+# SIGNAL SIMPEL GRAPHIC
+@ssg = (inputLabels, inputNumbers) ->
+  ctx = document.getElementById('simple_graphic').getContext('2d')
+  chart = new Chart(ctx,
+    type: 'line'
+    data:
+      labels: inputLabels
+      datasets: [{
+        label: 'Входные данные'
+        backgroundColor: 'rgba(255, 255, 255, 0)'
+        borderColor: 'rgb(255, 99, 132)'
+        borderWidth: 2
+        data: inputNumbers
+      } ]
+    options: {
+     elements: {
+      point: {
+       radius: 0
+      }
+     }
+     scales: {
+      xAxes: [{
+       ticks:
+         autoSkip: true
+         maxTicksLimit: 24
+      }]
+     }
+    })
+
+# SIGNAL CORRELATION GRAPHIC
+@scg = (inputLabels, inputNumbers) ->
+  ctx = document.getElementById('simple_correlation').getContext('2d')
+  chart = new Chart(ctx,
+    type: 'line'
+    data:
+      labels: inputLabels
+      datasets: [{
+        label: 'Входные данные'
+        backgroundColor: 'rgba(255, 255, 255, 0)'
+        borderColor: 'rgb(255, 99, 132)'
+        borderWidth: 2
+        data: inputNumbers
+      } ]
+    options: {
+     elements: {
+      point: {
+       radius: 0
+      }
+     }
+     scales: {
+      xAxes: [{
+       ticks:
+         autoSkip: true
+         maxTicksLimit: 24
+      }]
+     }
+    })
+
+
+# STATISTC FILE PARSE
+@handleFilesStatistic = (files) ->
   file = files[0];
 
   reader = new FileReader
@@ -161,6 +250,29 @@
   reader.readAsText file
 
 
+# SIGNAL FILE PARSE
+@handleFilesSignal = (ths) ->
+  data = new FormData
+  data.append 'file-0', ths.files[0]
+  $.ajax
+    url: 'parse_signal'
+    data: data
+    cache: false
+    contentType: false
+    processData: false
+    method: 'POST'
+    success: (data) ->
+      $('.tab-graphic, .tab-spectre, .tab-histogram').remove
+      $('.tabs-content').append data
+      $('.active-tab-content').removeClass('active-tab-content')
+      $('.' + $('.tabs .btn-primary').data('tab-name')).addClass 'active-tab-content'
+      return
+    complete: ->
+      ths.value = ''
+      return
+  return
+
+
 # END OF CHARTS
 # --------------------
 
@@ -168,7 +280,7 @@
 $(document).ready ->
   # SUBMIT FORM
   $(".input-data-form").on("ajax:success", (e, data, status, xhr) ->
-    $('.tab-statistic, .tab-graphic, .tab-spectre, .tab-histogram').remove()
+    $('.tab-statistic, .tab-graphic').remove()
     $('.tabs-content').append(xhr.responseText)
     $('.active-tab-content').removeClass('active-tab-content')
     $('.' + $('.tabs .btn-primary').data('tab-name')).addClass 'active-tab-content'
@@ -196,3 +308,7 @@ $(document).ready ->
   # CHECKOBOX CHANGED
   $('.input-data-form input').change ->
     $('.input-data-form').submit();
+
+
+  # MENU ACTIVE
+  $('.main-menu li[data-url="' + window.location.pathname + '"').addClass 'active'

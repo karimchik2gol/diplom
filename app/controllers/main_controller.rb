@@ -7,6 +7,9 @@ class MainController < ApplicationController
   def index
   end
 
+  def signal
+  end
+
   def create
   	@input_numbers = params[:data][:input].split(',').map { |obj| obj.to_i }
     perm_par = permitted_params.to_h.delete_if { |key, value| value == "0" }.map {|k,v| k}
@@ -20,6 +23,15 @@ class MainController < ApplicationController
   	@standard_deviation = @results["standard_deviation"]
     @up_standard_deviation = 2 * @mean - @standard_deviation
   	render partial: "statistic"
+  end
+
+  def parse_signal
+    file = params["file-0"]
+    time = 1
+    histogram_frequency = 200
+    signal = Mysignal.new(file, time, histogram_frequency)
+    @graphic = signal.draw_graphic
+    render partial: "signal_graphic"
   end
 
   def permitted_params
