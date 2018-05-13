@@ -4,39 +4,21 @@
 	<h3 class="text-left m-b-30">Вычисление статистических параметров</h3>
 	<div class="field m-b-20">
 		<%= label_tag :input, "Введите входные данные" %>
-		<%= file_field_tag :input, onchange: "handleFilesStatistic(this.files)" %>
+		<%= file_field_tag :input, onchange: "handleFilesStatistic(this)" %>
 	</div>
 
 	<div class="tabs m-b-20">
 		<div class="tab btn btn-primary btn-secondary" data-tab-name="tab-option">Опции</div>
 		<div class="tab btn btn-secondary" data-tab-name="tab-statistic">Статистические параметры</div>
 		<div class="tab btn btn-secondary" data-tab-name="tab-graphic">График</div>
+		<div class="tab btn btn-secondary" data-tab-name="tab-spectre">Спектр</div>
+		<div class="tab btn btn-secondary" data-tab-name="tab-histogram">Гистограмма</div>
+		<div class="tab btn btn-secondary" data-tab-name="tab-correlation">Корреляционная функция</div>
+		<div class="tab btn btn-secondary" data-tab-name="tab-periodgramma">Периодограмма</div>
+		<div class="tab btn btn-secondary" data-tab-name="tab-mixed-spectre">Модифицированный спектр(???)</div>
 	</div>
 
 	<div class="tabs-content">
-		<div class="tab-content active-tab-content tab-option">
-			<%= form_with scope: :data, url: create_main_path, class: 'input-data-form' do |f| %>	
-				<div class="field">
-					<%= f.hidden_field :input, id: 'hidden-data' %>
-				</div>
-
-				<div class="row">
-					<%= fields_for :attr do |checkbox_attribute| %>
-						<% @attributes.each do |attribute| %>
-							<% if ![:mean, :standard_deviation].include?(attribute) %>
-								<div class="field col-md-6">
-									<div class="checkbox">
-										<%= checkbox_attribute.label attribute do %>
-											<%= checkbox_attribute.check_box attribute, checked: true %>
-											<%= @attribute_labels[attribute] %>
-										<% end %>
-									</div>
-								</div>
-							<% end %>
-						<% end %>
-					<% end %>
-				</div>
-			<% end %>
-		</div>
+		<%= render partial: "options_statistics" %>
 	</div>
 </div>

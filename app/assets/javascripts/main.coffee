@@ -85,32 +85,35 @@
 
 
 # Input Data Spectre
-@sss = (inputLabels, inputNumbers) ->
-  ctx = document.getElementById('simple_spectrum').getContext('2d')
-  numberOfPointsRadiusSize = 3 - Math.log10(inputNumbers.length)
+@sss = (inputLabels, inputNumbers, id = 'simple_spectrum') ->
+  ctx = document.getElementById(id).getContext('2d')
   chart = new Chart(ctx,
    type: 'bar'
    data:
     labels: inputLabels
     datasets: [{
-      label: 'Входные данные'
+      label: 'Значение'
       backgroundColor: 'rgba(65, 118, 164, 1)'
       data: inputNumbers
     } ]
    options: {
      scales: {
+      yAxes: [{
+        display: true,
+        ticks: {
+            suggestedMin: 0
+            beginAtZero: true
+        }
+      }]
       xAxes: [{
        barThickness: 2
-       ticks:
+       ticks: {
          autoSkip: true
          maxTicksLimit: 24
+        }
       }]
      }
      pan: {
-      enabled: true
-      mode: 'xy'
-     }
-     zoom: {
       enabled: true
       mode: 'xy'
      }
@@ -121,25 +124,26 @@
   chart = new Chart(ctx,
    type: 'bar'
    data:
+    legend: {
+      position: 'right'
+    }
     labels: inputLabels
     datasets: [{
-      label: 'Входные данные'
+      label: 'Количество вхождений'
       backgroundColor: 'rgba(65, 118, 164, 1)'
       data: inputNumbers
     } ]
    options: {
      scales: {
       xAxes: [{
+       barPercentage: 1.0
+       categoryPercentage: 0.9
        ticks:
          autoSkip: true
-         maxTicksLimit: 24
+         maxTicksLimit: 10
       }]
      }
      pan: {
-      enabled: true
-      mode: 'xy'
-     }
-     zoom: {
       enabled: true
       mode: 'xy'
      }
@@ -238,16 +242,28 @@
 
 
 # STATISTC FILE PARSE
-@handleFilesStatistic = (files) ->
-  file = files[0];
-
-  reader = new FileReader
-  reader.onload = do (reader) ->
-   ->
-    document.getElementById('hidden-data').value = reader.result
-    $('.input-data-form').submit();
-    return
-  reader.readAsText file
+@handleFilesStatistic = (ths) ->
+  data = new FormData(document.querySelector('form'))
+  data.append 'file-0', ths.files[0]
+  console.log(ths)
+  $.ajax
+    url: 'create'
+    data: data
+    cache: false
+    contentType: false
+    processData: false
+    method: 'POST'
+    success: (data) ->
+      $('.tabs-content').empty()
+      $('.tabs-content').append(data)
+      $('.active-tab-content').removeClass('active-tab-content')
+      $('.' + $('.tabs .btn-primary').data('tab-name')).addClass 'active-tab-content'
+      $('#input').val('')
+      return
+    complete: ->
+      ths.value = ''
+      return
+  return
 
 
 # SIGNAL FILE PARSE
@@ -263,6 +279,7 @@
     method: 'POST'
     success: (data) ->
       $('.tab-graphic, .tab-spectre, .tab-histogram').remove
+      console.log data
       $('.tabs-content').append data
       $('.active-tab-content').removeClass('active-tab-content')
       $('.' + $('.tabs .btn-primary').data('tab-name')).addClass 'active-tab-content'

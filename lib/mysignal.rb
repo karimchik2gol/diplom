@@ -14,7 +14,7 @@ class Mysignal
 		self.sample_rate = samples / time
 		self.freq_resolution = sample_rate / samples
 		self.whole_signal_length = time * samples
-		self.labels = Array.new(samples) { |i| i } #.to_f * time / whole_signal_length.to_f).round(3
+		self.labels = Array.new(samples) { |i| i + 1} #.to_f * time / whole_signal_length.to_f).round(3
 		self.amplitude_frequency = []
 		read_file
 	end
@@ -76,7 +76,7 @@ class Mysignal
 					histogram_res << 0
 					sin_func = Math.sin(2 * Math::PI * af[1] * i / histogram_frequency)
 					histogram_res[histogram_res.count - 1] += sin_func
-					histogram_labels << i
+					histogram_labels << i + 1
 				end
 			end
 			
@@ -102,7 +102,7 @@ class Mysignal
 			graphic << gs 
 		end
 
-		xx = fft(xx, samples)
+		xx = Mysignal.fft(xx, samples)
 
 		# xy = []
 		samples.times do |i|
@@ -117,12 +117,12 @@ class Mysignal
 		return graphic, spectrum
 	end
 
-	def fft(x, n)
+	def self.fft(x, n)
 		if n > 1 
-			separate(x, n)
+			Mysignal.separate(x, n)
 
-			fft(x, n / 2)
-			x[n/2..n-1] = fft(x[n/2..n-1], n / 2)
+			Mysignal.fft(x, n / 2)
+			x[n/2..n-1] = Mysignal.fft(x[n/2..n-1], n / 2)
 
 			(n / 2).times do |k|
 				e = x[k]
@@ -138,7 +138,7 @@ class Mysignal
 		return x
 	end
 
-	def separate(a, n)
+	def self.separate(a, n)
 		# Сорируем. Вверх - парные элементы. Внизу - непарные
 		b = []
 		(n / 2).times.each { |i| b << a[i * 2 + 1] }

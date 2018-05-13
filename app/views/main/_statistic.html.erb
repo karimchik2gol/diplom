@@ -1,3 +1,5 @@
+<%= render partial: "options_statistics" %>
+
 <div class="tab-content tab-statistic">
 	<h3 class="text-center m-b-20">Результаты вычислений</h3>
 
@@ -15,14 +17,39 @@
 
 <div class="tab-content tab-spectre">
 	<h3 class="text-center m-b-20">График спектра</h3>
-	<canvas id="spectre" width="280" height="100"></canvas>
+	<canvas id="simple_spectrum" width="280" height="100" data-input-numbers="<%= @spectrum %>" data-input-labels="<%= @spectrum_label %>"></canvas>
 </div>
 
 <div class="tab-content tab-histogram">
 	<h3 class="text-center m-b-20">Гистограмма входных данных</h3>
-	<canvas id="historgram" width="280" height="100"></canvas>
+	<canvas id="simple_histogram" width="280" height="100" data-input-numbers="<%= @histograma %>" data-input-labels="<%= @histograma_label %>"></canvas>
 </div>
 
+<div class="tab-content tab-correlation">
+	<h3 class="text-center m-b-20">Корреляционная функция</h3>
+	<canvas id="simple_correlation" width="280" height="100" 
+	data-input-numbers="<%= @correlation %>" data-input-labels="<%= @correlation_label %>"></canvas>
+</div>
+
+<div class="tab-content tab-periodgramma">
+	<h3 class="text-center m-b-20">Периодограмма</h3>
+	<canvas id="simple_periodgramma" width="280" height="100" 
+	data-input-numbers="<%= @periodgramma %>" data-input-labels="<%= @periodgramma_label %>"></canvas>
+</div>
+
+<div class="tab-content tab-mixed-spectre">
+	<h3 class="text-center m-b-20">Спектр набора данных умноженнного на квадрат</h3>
+	<canvas id="simple_rectangle" width="280" height="100" 
+	data-input-numbers="<%= @mixed_spectre[:rectangle] %>" data-input-labels="<%= @spectrum_label %>"></canvas>
+
+	<h3 class="text-center m-b-20">Спектр набора данных умноженнного на треуголььник</h3>
+	<canvas id="simple_triangle" width="280" height="100" 
+	data-input-numbers="<%= @mixed_spectre[:triangle] %>" data-input-labels="<%= @spectrum_label %>"></canvas>
+
+	<h3 class="text-center m-b-20">Спектр набора данных умноженнного на синусоиду</h3>
+	<canvas id="simple_sinusoid" width="280" height="100" 
+	data-input-numbers="<%= @mixed_spectre[:sinusoid] %>" data-input-labels="<%= @spectrum_label %>"></canvas>
+</div>
 
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -32,11 +59,26 @@
 
 		idc(inputLabels, inputNumbers, chartEl.data('mean'), chartEl.data('standard_deviation'), chartEl.data('up_standard_deviation'));
 
-		spectre = $("#spectre")
-		ids(inputLabels, inputNumbers);
+		sSpectrum = $('#simple_spectrum')
+		sss(sSpectrum.data('input-labels'), sSpectrum.data('input-numbers'))
 
-		histogramaEl = $('#historgram');
-		idh(inputLabels, inputNumbers);
+		sHistorgram = $('#simple_histogram')
+		ssh(sHistorgram.data('input-labels'), sHistorgram.data('input-numbers'))
+
+		sCorrelation = $('#simple_correlation')
+		sss(sCorrelation.data('input-labels'), sCorrelation.data('input-numbers'), 'simple_correlation')
+
+		sPeriodgramma = $('#simple_periodgramma')
+		sss(sPeriodgramma.data('input-labels'), sPeriodgramma.data('input-numbers'), 'simple_periodgramma')
+
+		sMixedSpectrum = $('#simple_rectangle')
+		sss(sMixedSpectrum.data('input-labels'), sMixedSpectrum.data('input-numbers'), 'simple_rectangle')
+
+		sMixedSpectrum = $('#simple_triangle')
+		sss(sMixedSpectrum.data('input-labels'), sMixedSpectrum.data('input-numbers'), 'simple_triangle')
+
+		sMixedSpectrum = $('#simple_sinusoid')
+		sss(sMixedSpectrum.data('input-labels'), sMixedSpectrum.data('input-numbers'), 'simple_sinusoid')
 	})
 
 </script>

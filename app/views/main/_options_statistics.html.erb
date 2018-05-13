@@ -1,0 +1,24 @@
+<div class="tab-content active-tab-content tab-option">
+	<%= form_with scope: :data, url: create_main_path, class: 'input-data-form' do |f| %>	
+		<div class="field">
+			<%= f.hidden_field :input, id: 'hidden-data' %>
+		</div>
+
+		<div class="row">
+			<%= fields_for :attr do |checkbox_attribute| %>
+				<% @attributes.each do |attribute| %>
+					<% if ![:mean, :standard_deviation].include?(attribute) %>
+						<div class="field col-md-6">
+							<div class="checkbox">
+								<%= checkbox_attribute.label attribute do %>
+									<%= checkbox_attribute.check_box attribute, checked: true %>
+									<%= @attribute_labels[attribute] %>
+								<% end %>
+							</div>
+						</div>
+					<% end %>
+				<% end %>
+			<% end %>
+		</div>
+	<% end %>
+</div>
