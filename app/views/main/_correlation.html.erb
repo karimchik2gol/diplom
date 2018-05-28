@@ -1,0 +1,15 @@
+<div class="tab-content tab-correlation additional">
+	<h3 class="text-center m-b-20">Корреляционная функция</h3>
+	<canvas id="simple_correlation" width="280" height="100" 
+	data-input-numbers="<%= @correlation %>" data-input-labels="<%= @correlation_label %>"></canvas>
+
+	<div class="row teoriya">
+		<h3 class="text-center m-b-15">Краткие теоретические сведения</h3>
+		<p><strong>Корреляционной функцией случайного процесса</strong> называют неслучайную функцию двух аргументов которая для каждой пары произвольно выбранных значений аргументов равна математическому ожиданию произведения двух случайных величин соответствующих сечений случайного процесса.</p>
+	</div>
+	
+	<script type="text/javascript">
+		sCorrelation = $('#simple_correlation')
+		sss(sCorrelation.data('input-labels'), sCorrelation.data('input-numbers'), 'simple_correlation')
+	</script>
+</div>

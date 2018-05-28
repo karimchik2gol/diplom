@@ -1,84 +1,33 @@
-<%= render partial: "options_statistics" %>
+<div class="tab-content tab-statistic additional">
+	<h3 class="text-center m-b-30">Вычисление статистических параметров</h3>
 
-<div class="tab-content tab-statistic">
-	<h3 class="text-center m-b-20">Результаты вычислений</h3>
+	<div class="row m-b-30">	
+		<table class="table table-bordered table-striped">
+			<tbody>
+				<% (@l.count >= @r.count ? @l.count : @r.count).times do |d| %>
+					<tr class="table-primary">
+						<td><%= @attribute_labels[@l[d][0].to_sym] %>: <%= @l[d][1] || "Невозможно вычислить" %>
+						</td>
+						<td><% if @r[d] %><%= @attribute_labels[@r[d][0].to_sym] %>: <%= @r[d][1] || "Невозможно вычислить" %><% end %>
+						</td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+	</div>
 
-	<div class="row m-b-30">
-		<% @results.each do |k, v| %>
-		  <p class="col-md-6"><%= @attribute_labels[k.to_sym] %>: <%= v || "Невозможно вычислить" %></p>
-		<% end %>
+	<div class="row teoriya">
+		<h3 class="text-center m-b-15">Краткие теоретические сведения</h3>
+		<p><strong>Медиана</strong> в математической статистике — число, характеризующее выборку (например, набор чисел). Если все элементы выборки различны, то медиана — это такое число выборки, что ровно половина из элементов выборки больше него, а другая половина меньше него. В более общем случае медиану можно найти, упорядочив элементы выборки по возрастанию или убыванию и взяв средний элемент.</p>
+
+		<p><strong>Моода</strong> — значение во множестве наблюдений, которое встречается наиболее часто. (Мода = типичность.) Иногда в совокупности встречается более чем одна мода (например: 6, 2, 6, 6, 8, 9, 9, 9, 0; мода — 6 и 9). В этом случае можно сказать, что совокупность мультимодальна. Из структурных средних величин только мода обладает таким уникальным свойством.</p>
+
+		<p><strong>Математи́ческое ожидание</strong> — среднее значение случайной величины (распределение вероятностей стационарной случайной величины) при стремлении количества выборок или количества измерений (иногда говорят — количества испытаний) её к бесконечности.</p>
+
+		<p><strong>Дисперсия случайной величины</strong> — мера разброса значений случайной величины относительно её математического ожидания. Обозначается <strong>D[X]</strong> в русской литературе и Var(X) (англ. variance) в зарубежной. В статистике часто употребляется обозначение σ<sup>2</sup> или σ<sup>2</sup><sub>X</sub>.</p>
+
+		<p><strong>Среднеквадратмческое отклонение</strong> — в теории вероятностей и статистике наиболее распространённый показатель рассеивания значений случайной величины относительно её математического ожидания. При ограниченных массивах выборок значений вместо математического ожидания используется среднее арифметическое совокупности выборок (измерений), это среднее арифметическое называют оценкой математического ожидания.</p>
+
+		<p></p>
 	</div>
 </div>
-
-<div class="tab-content tab-graphic">
-	<h3 class="text-center m-b-20">График входных данных</h3>
-	<canvas id="inputData" width="280" height="100" data-input-numbers="<%= @input_numbers %>" data-input-labels="<%= @input_labels %>" data-mean="<%= @mean %>" data-standard_deviation="<%= @standard_deviation %>" data-up_standard_deviation="<%= @up_standard_deviation %>"></canvas>
-</div>
-
-<div class="tab-content tab-spectre">
-	<h3 class="text-center m-b-20">График спектра</h3>
-	<canvas id="simple_spectrum" width="280" height="100" data-input-numbers="<%= @spectrum %>" data-input-labels="<%= @spectrum_label %>"></canvas>
-</div>
-
-<div class="tab-content tab-histogram">
-	<h3 class="text-center m-b-20">Гистограмма входных данных</h3>
-	<canvas id="simple_histogram" width="280" height="100" data-input-numbers="<%= @histograma %>" data-input-labels="<%= @histograma_label %>"></canvas>
-</div>
-
-<div class="tab-content tab-correlation">
-	<h3 class="text-center m-b-20">Корреляционная функция</h3>
-	<canvas id="simple_correlation" width="280" height="100" 
-	data-input-numbers="<%= @correlation %>" data-input-labels="<%= @correlation_label %>"></canvas>
-</div>
-
-<div class="tab-content tab-periodgramma">
-	<h3 class="text-center m-b-20">Периодограмма</h3>
-	<canvas id="simple_periodgramma" width="280" height="100" 
-	data-input-numbers="<%= @periodgramma %>" data-input-labels="<%= @periodgramma_label %>"></canvas>
-</div>
-
-<div class="tab-content tab-mixed-spectre">
-	<h3 class="text-center m-b-20">Спектр набора данных умноженнного на квадрат</h3>
-	<canvas id="simple_rectangle" width="280" height="100" 
-	data-input-numbers="<%= @mixed_spectre[:rectangle] %>" data-input-labels="<%= @spectrum_label %>"></canvas>
-
-	<h3 class="text-center m-b-20">Спектр набора данных умноженнного на треуголььник</h3>
-	<canvas id="simple_triangle" width="280" height="100" 
-	data-input-numbers="<%= @mixed_spectre[:triangle] %>" data-input-labels="<%= @spectrum_label %>"></canvas>
-
-	<h3 class="text-center m-b-20">Спектр набора данных умноженнного на синусоиду</h3>
-	<canvas id="simple_sinusoid" width="280" height="100" 
-	data-input-numbers="<%= @mixed_spectre[:sinusoid] %>" data-input-labels="<%= @spectrum_label %>"></canvas>
-</div>
-
-<script type="text/javascript">
-	$(document).ready(function(){
-		chartEl = $('#inputData');
-		inputLabels = chartEl.data('input-labels');
-		inputNumbers = chartEl.data('input-numbers');
-
-		idc(inputLabels, inputNumbers, chartEl.data('mean'), chartEl.data('standard_deviation'), chartEl.data('up_standard_deviation'));
-
-		sSpectrum = $('#simple_spectrum')
-		sss(sSpectrum.data('input-labels'), sSpectrum.data('input-numbers'))
-
-		sHistorgram = $('#simple_histogram')
-		ssh(sHistorgram.data('input-labels'), sHistorgram.data('input-numbers'))
-
-		sCorrelation = $('#simple_correlation')
-		sss(sCorrelation.data('input-labels'), sCorrelation.data('input-numbers'), 'simple_correlation')
-
-		sPeriodgramma = $('#simple_periodgramma')
-		sss(sPeriodgramma.data('input-labels'), sPeriodgramma.data('input-numbers'), 'simple_periodgramma')
-
-		sMixedSpectrum = $('#simple_rectangle')
-		sss(sMixedSpectrum.data('input-labels'), sMixedSpectrum.data('input-numbers'), 'simple_rectangle')
-
-		sMixedSpectrum = $('#simple_triangle')
-		sss(sMixedSpectrum.data('input-labels'), sMixedSpectrum.data('input-numbers'), 'simple_triangle')
-
-		sMixedSpectrum = $('#simple_sinusoid')
-		sss(sMixedSpectrum.data('input-labels'), sMixedSpectrum.data('input-numbers'), 'simple_sinusoid')
-	})
-
-</script>

@@ -11,11 +11,11 @@
 .m-b-30 {
 	margin-bottom: 30px;
 }
+.m-b-15 {
+	margin-bottom: 15px;
+}
 .tabs {
 	border-bottom: 1px solid #337ab7;
-}
-.tab {
-	display: none;
 }
 .tab .btn-primary {
 	display: block;
@@ -28,4 +28,46 @@
 }
 .active-tab-content {
 	display: block;
+}
+.p-l-15 {
+	padding-left: 15px;
+}
+.site-header {
+	background-color: #353131;
+}
+
+.site-header .tab {
+	float: left;
+	padding: 10px 15px;
+	font-family: 'Bebas';
+	font-size: 18px;
+	letter-spacing: 0.5px;
+	color: #ffffff;
+	cursor: pointer;
+	border-radius: 0;
+}
+
+.site-header .tab:hover {
+	background-color: #272727;
+}
+
+.site-header .tab.btn-primary {
+	background-color: #1483d2;
+}
+
+.table td {
+	width: 50%;
+}
+
+.col-md-5.additional-form {
+	padding: 0;
+}
+
+#popup {
+	position: absolute;
+	top: 25%;
+	width: 120px;
+	left: 50%;
+	margin-left: -60px;
+	display: none;
 }

@@ -1,0 +1,15 @@
+<div class="tab-content tab-periodgramma additional">
+	<h3 class="text-center m-b-20">Периодограмма</h3>
+	<canvas id="simple_periodgramma" width="280" height="100" 
+	data-input-numbers="<%= @periodgramma %>" data-input-labels="<%= @periodgramma_label %>"></canvas>
+
+	<div class="row teoriya">
+		<h3 class="text-center m-b-15">Краткие теоретические сведения</h3>
+		<p><strong>Периодограмма</strong> — оценка спектральной плотности мощности (СПМ), основанная на вычислении квадрата модуля преобразования Фурье последовательности данных с использованием статистического усреднения</p>
+	</div>
+
+	<script type="text/javascript">
+		sPeriodgramma = $('#simple_periodgramma')
+		sss(sPeriodgramma.data('input-labels'), sPeriodgramma.data('input-numbers'), 'simple_periodgramma')
+	</script>
+</div>

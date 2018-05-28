@@ -1,4 +1,20 @@
 <div class="tab-content active-tab-content tab-option">
+	<div class="field m-b-20">
+		<h3 class="text-left">Введите входные данные</h3>
+		<%= file_field_tag :input, onchange: "handleFilesStatistic(this)" %>
+	</div>
+
+	<div class="row menu-option m-b-30">
+		<h3 class="text-left p-l-15">Выбор отображения интерфейса</h3>
+		<div class="field col-md-6"><div class="checkbox"><label><input type="checkbox" data-tab-name="tab-statistic" checked> Статистические параметры</label></div></div>
+		<div class="field col-md-6"><div class="checkbox"><label><input type="checkbox" data-tab-name="tab-graphic" checked> График</label></div></div>
+		<div class="field col-md-6"><div class="checkbox"><label><input type="checkbox" data-tab-name="tab-spectre" checked> Спектр</label></div></div>
+		<div class="field col-md-6"><div class="checkbox"><label><input type="checkbox" data-tab-name="tab-histogram" checked> Гистограмма</label></div></div>
+		<div class="field col-md-6"><div class="checkbox"><label><input type="checkbox" data-tab-name="tab-correlation" checked> Корреляционная функция</label></div></div>
+		<div class="field col-md-6"><div class="checkbox"><label><input type="checkbox" data-tab-name="tab-periodgramma" checked> Периодограмма</label></div></div>
+	</div>
+
+	<h3 class="text-left">Выбор отображения статистических параметров</h3>
 	<%= form_with scope: :data, url: create_main_path, class: 'input-data-form' do |f| %>	
 		<div class="field">
 			<%= f.hidden_field :input, id: 'hidden-data' %>
@@ -19,6 +35,26 @@
 					<% end %>
 				<% end %>
 			<% end %>
+		</div>
+
+		<div class="row menu-option col-md-12 m-b-30">
+			<h3 class="text-left">Дополнительные параметры</h3>
+			<div class="form-group col-md-5 additional-form">
+				<label>Длина секции</label>
+				<%= f.text_field :dlina, value: "256", class: 'form-control' %>
+			</div>
+			<div class="form-group col-md-5 col-md-offset-1 additional-form" style="padding-left: 30px;">
+				<label>Смещение секции</label>
+				<%= f.text_field :smechenie, value: "10", class: 'form-control' %>
+			</div>
+			<div class="form-group col-md-5 additional-form" style="display: none;">
+				<label>Длина БПФ</label>
+				<%= f.hidden_field :dlinabpf, value: "64", class: 'form-control' %>
+			</div>
+			<div class="form-group col-md-5 additional-form">
+				<label>Вид окна</label><br/>
+				<%= f.select :vidokna, [["Квадрат", "rectangle"], ["Треугольник", "triangle"]], {include_blank: true}, { class: "form-control" } %>
+			</div>
 		</div>
 	<% end %>
 </div>

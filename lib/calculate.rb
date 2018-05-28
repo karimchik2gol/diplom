@@ -25,7 +25,7 @@ class Calculate
 
   attr_accessor :stats, :options
 
-  def initialize(stats, options)
+  def initialize(stats, options = nil)
   	self.stats = DescriptiveStatistics::Stats.new(stats)
   	self.options = options
   end
@@ -57,7 +57,7 @@ class Calculate
     length = data.count
     xx = Mysignal.fft(data, length)
 
-    length.times do |i|
+    (length / 2).times do |i|
       spectrum << xx[i].abs.round(5)
       labels << i + 1 unless dynamic_stat
     end
@@ -73,7 +73,7 @@ class Calculate
     max = stats.max
     raznica = max - min
     length = stats.count
-    count_of_rows =  length > 100 ? 10 : 5 + length / 20 
+    count_of_rows = length > 100 ? 10 : 5 + length / 20 
 
     count_of_rows.times do |current_row|
       condition_down = min + raznica * current_row / count_of_rows
@@ -89,7 +89,9 @@ class Calculate
   def correlation
     correlation, label = [], []
     length = stats.count
-    length.times do |i|
+    # 64 ticks, put length for full correlation
+    default_length = length > 64 ? 64 : length
+    default_length.times do |i|
       if i < length - 1 # don't add last element
         sum = 0
         length.times do |j|
@@ -108,20 +110,34 @@ class Calculate
     return correlation, label
   end
 
-  def periodgramma
+  def periodgramma(dlina, smechenie, dlinabpf, vidokna)
     number_of_items = stats.count
-    number_of_periods = 4
-    items_in_section = number_of_items / number_of_periods
-    periodogram = Array.new(items_in_section) { 0 }
-    label = Array.new(items_in_section) { |i| i + 1 }
+    puts number_of_items
+    number_of_periods = number_of_items / dlina
+    periodogram = Array.new(dlina / 2) { 0 }
+    label = Array.new(dlina / 2) { |i| i + 1 }
+
+    if vidokna == "rectangle"
+      local_stats = stats.each_with_index.map { |x, i| i < number_of_items ? x * number_of_items : x }
+    elsif vidokna == "triangle"
+      cos = Math.cos(45 * Math::PI / 180)
+      local_stats = stats[0..number_of_items / 2 - 1].each_with_index.map { |x, i| x * i / cos }
+      local_stats.concat(stats[number_of_items / 2..number_of_items].each_with_index.map { |x, i| x * (number_of_items / 2 + i) / cos })
+    end
+    local_stats ||= stats
 
     number_of_periods.times do |i|
       j = 0
-      from =  number_of_items * i / number_of_periods
-      to = number_of_items * (i + 1) / number_of_periods - 1
-  
-      spectrum_and_graph(stats[from..to])[0].each do |l|
-        periodogram[j] += l.to_f / number_of_periods # average value
+      from = smechenie + number_of_items * i / number_of_periods
+      to = smechenie + number_of_items * (i + 1) / number_of_periods - 1
+        
+      total_array = local_stats[from..to]
+      (dlina - total_array.count).times { total_array << 0 } if total_array.count < dlina
+
+      xx = Mysignal.fft(total_array, dlina)
+
+      (dlina / 2).times do |i|
+        periodogram[j] += xx[i].abs.round(5).to_f / number_of_periods 
         j += 1
       end
     end
@@ -136,9 +152,9 @@ class Calculate
   private
   def rectangle
     local_stats = stats.dup
-    last_point = local_stats.count / 2 # сторона - половина длины набора
+    last_point = local_stats.count # сторона - половина длины набора
 
-    return spectrum_and_graph(local_stats.each_with_index.map { |x, i| i < last_point ? x * last_point : x })
+    return 
   end
 
   def triangle
@@ -146,13 +162,6 @@ class Calculate
     last_point = local_stats.count # катет - полная длины набора (равнобедренный треугольник)
     cos = Math.cos(45 * Math::PI / 180)
 
-    return spectrum_and_graph(local_stats.each_with_index.map { |x, i| x * i * cos })
-  end
-
-  def sinusoid
-    local_stats = stats.dup
-    last_point = local_stats.count # синусоида - 1 такт
-
-    return spectrum_and_graph(local_stats.each_with_index.map { |x, i| x * Math.sin((i.to_f / last_point) * i * Math::PI) })
+    return spectrum_and_graph()
   end
 end

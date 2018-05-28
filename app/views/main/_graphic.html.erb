@@ -1,0 +1,12 @@
+<div class="tab-content tab-graphic additional">
+	<h3 class="text-center m-b-20">График входных данных</h3>
+	<canvas id="inputData" width="280" height="100" data-input-numbers="<%= @input_numbers %>" data-input-labels="<%= @input_labels %>" data-mean="<%= @mean %>" data-standard_deviation="<%= @standard_deviation %>" data-up_standard_deviation="<%= @up_standard_deviation %>"></canvas>
+
+	<script type="text/javascript">
+		chartEl = $('#inputData');
+		inputLabels = chartEl.data('input-labels');
+		inputNumbers = chartEl.data('input-numbers');
+
+		idc(inputLabels, inputNumbers, chartEl.data('mean'), chartEl.data('standard_deviation'), chartEl.data('up_standard_deviation'));
+	</script>
+</div>

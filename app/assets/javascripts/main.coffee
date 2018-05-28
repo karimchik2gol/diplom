@@ -242,28 +242,57 @@
 
 
 # STATISTC FILE PARSE
+file = null
+
 @handleFilesStatistic = (ths) ->
+  file = ths.files[0]
+  $('.additional').remove();
+
+@tabClick = (ths, url) ->
+  if file
+    ths = $(ths);
+    clsName = '.' + ths.data('tab-name')
+    $('.tabs .btn-primary').removeClass('btn-primary')
+    ths.addClass 'btn-primary'
+    $('.active-tab-content').removeClass 'active-tab-content'
+    if url && !$(clsName).length
+      send_query(url, clsName)
+    else
+      $(clsName).addClass 'active-tab-content'
+  else
+    BootstrapDialog.show
+      title: 'Предупреждение'
+      message: 'Добавьте файл для доступа к данной странице'
+      type: 'type-warning'
+
+     
+send_query = (url, clsName) ->
+  $("#popup").show(0)
   data = new FormData(document.querySelector('form'))
-  data.append 'file-0', ths.files[0]
-  console.log(ths)
+  data.append 'file-0', file
+  
   $.ajax
-    url: 'create'
+    url: url
     data: data
     cache: false
     contentType: false
     processData: false
     method: 'POST'
     success: (data) ->
-      $('.tabs-content').empty()
+      $("#popup").hide(0)
       $('.tabs-content').append(data)
-      $('.active-tab-content').removeClass('active-tab-content')
-      $('.' + $('.tabs .btn-primary').data('tab-name')).addClass 'active-tab-content'
-      $('#input').val('')
-      return
-    complete: ->
-      ths.value = ''
-      return
+      $(clsName).addClass 'active-tab-content'
   return
+
+
+
+
+
+
+
+
+
+
 
 
 # SIGNAL FILE PARSE
@@ -289,7 +318,6 @@
       return
   return
 
-
 # END OF CHARTS
 # --------------------
 
@@ -312,20 +340,22 @@ $(document).ready ->
     $('.input-data-form').submit()
     return
 
-
-  # TAB CLICK
-  $('.tabs .btn-secondary').click (e) ->
-    e.preventDefault()
-    $('.tabs .btn-primary').removeClass('btn-primary')
-    $(this).addClass 'btn-primary'
-    $('.active-tab-content').removeClass 'active-tab-content'
-    $('.' + $(this).data('tab-name')).addClass 'active-tab-content'
-    return
-
   # CHECKOBOX CHANGED
   $('.input-data-form input').change ->
-    $('.input-data-form').submit();
+    $('.tab-statistic').remove();
+
+  $('.additional-form input').change ->
+    $('.tab-periodgramma').remove();
 
 
   # MENU ACTIVE
   $('.main-menu li[data-url="' + window.location.pathname + '"').addClass 'active'
+
+  $('.menu-option input').change ->
+    data_name = $(this).data('tab-name')
+    item = $('.tabs .tab[data-tab-name=\'' + data_name + '\']')
+    if $(this).is(':checked')
+      item.show()
+    else
+      item.hide()
+    return
