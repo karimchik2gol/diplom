@@ -243,10 +243,23 @@
 
 # STATISTC FILE PARSE
 file = null
+@showAlert = (clsName) ->
+  $(clsName).fadeIn(200)
+  setTimeout (->
+    $(clsName).fadeOut(200)
+    return
+  ), 3000
 
 @handleFilesStatistic = (ths) ->
-  file = ths.files[0]
-  $('.additional').remove();
+  fl = ths.files[0]
+  extension = fl.name.split('.').slice(-1)[0]
+  if fl && extension == 'txt'
+    showAlert('.file-upload-container .alert-success')
+    file = fl
+    console.log(file)
+    $('.additional').remove();
+  else if fl
+    showAlert('.file-upload-container .alert-danger')
 
 @tabClick = (ths, url) ->
   if file
@@ -283,6 +296,7 @@ send_query = (url, clsName) ->
       $('.tabs-content').append(data)
       $(clsName).addClass 'active-tab-content'
   return
+
 
 
 

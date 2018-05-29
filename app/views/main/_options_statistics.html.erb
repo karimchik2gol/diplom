@@ -1,17 +1,56 @@
 <div class="tab-content active-tab-content tab-option">
-	<div class="field m-b-20">
+	<div class="field m-b-20 file-upload-container">
 		<h3 class="text-left">Введите входные данные</h3>
-		<%= file_field_tag :input, onchange: "handleFilesStatistic(this)" %>
+		<div class="alert alert-success">Ваш файл загружен</div>
+		<div class="alert alert-danger">Файл должен иметь расширение txt</div>
+		<div class="beautiful-upload"></div>
+		<%= file_field_tag :input, onchange: "handleFilesStatistic(this)", class: 'upload' %>
 	</div>
 
 	<div class="row menu-option m-b-30">
 		<h3 class="text-left p-l-15">Выбор отображения интерфейса</h3>
-		<div class="field col-md-6"><div class="checkbox"><label><input type="checkbox" data-tab-name="tab-statistic" checked> Статистические параметры</label></div></div>
-		<div class="field col-md-6"><div class="checkbox"><label><input type="checkbox" data-tab-name="tab-graphic" checked> График</label></div></div>
-		<div class="field col-md-6"><div class="checkbox"><label><input type="checkbox" data-tab-name="tab-spectre" checked> Спектр</label></div></div>
-		<div class="field col-md-6"><div class="checkbox"><label><input type="checkbox" data-tab-name="tab-histogram" checked> Гистограмма</label></div></div>
-		<div class="field col-md-6"><div class="checkbox"><label><input type="checkbox" data-tab-name="tab-correlation" checked> Корреляционная функция</label></div></div>
-		<div class="field col-md-6"><div class="checkbox"><label><input type="checkbox" data-tab-name="tab-periodgramma" checked> Периодограмма</label></div></div>
+		<div class="field col-md-6">
+			<div class="material-switch">
+				<input type="checkbox" class="someSwitchOptionSuccess" id="tab-statistic" data-tab-name="tab-statistic" checked> 
+				<label for="tab-statistic" class="label-success"></label>
+			</div>
+			<div class="checkbox-label">Статистические параметры</div>
+		</div>
+		<div class="field col-md-6">
+			<div class="material-switch">
+				<input type="checkbox" class="someSwitchOptionSuccess" id="tab-graphic" data-tab-name="tab-graphic" checked> 
+				<label for="tab-graphic" class="label-success"></label>
+			</div>
+			<div class="checkbox-label">График</div>
+		</div>
+		<div class="field col-md-6">
+			<div class="material-switch">
+				<input type="checkbox" class="someSwitchOptionSuccess" id="tab-spectre" data-tab-name="tab-spectre" checked> 
+				<label for="tab-spectre" class="label-success"></label>
+			</div>
+			<div class="checkbox-label">Спектр</div>
+		</div>
+		<div class="field col-md-6">
+			<div class="material-switch">
+				<input type="checkbox" class="someSwitchOptionSuccess" id="tab-histogram" data-tab-name="tab-histogram" checked> 
+				<label for="tab-histogram" class="label-success"></label>
+			</div>
+			<div class="checkbox-label">Гистограмма</div>
+		</div>
+		<div class="field col-md-6">
+			<div class="material-switch">
+				<input type="checkbox" class="someSwitchOptionSuccess" id="tab-correlation" data-tab-name="tab-correlation" checked> 
+				<label for="tab-correlation" class="label-success"></label>
+			</div>
+			<div class="checkbox-label">Корреляционная функция</div>
+		</div>
+		<div class="field col-md-6">
+			<div class="material-switch">
+				<input type="checkbox" class="someSwitchOptionSuccess" id="tab-periodgramma" data-tab-name="tab-periodgramma" checked> 
+				<label for="tab-periodgramma" class="label-success"></label>
+			</div>
+			<div class="checkbox-label">Периодограмма</div>
+		</div>
 	</div>
 
 	<h3 class="text-left">Выбор отображения статистических параметров</h3>
@@ -25,11 +64,12 @@
 				<% @attributes.each do |attribute| %>
 					<% if ![:mean, :standard_deviation].include?(attribute) %>
 						<div class="field col-md-6">
-							<div class="checkbox">
-								<%= checkbox_attribute.label attribute do %>
-									<%= checkbox_attribute.check_box attribute, checked: true %>
-									<%= @attribute_labels[attribute] %>
-								<% end %>
+							<div class="material-switch">
+								<%= checkbox_attribute.check_box attribute, checked: true, class: "someSwitchOptionSuccess" %>
+								<%= checkbox_attribute.label attribute, "test", class: "label-success" %>
+							</div>
+							<div class="checkbox-label">
+								<%= @attribute_labels[attribute] %>
 							</div>
 						</div>
 					<% end %>
