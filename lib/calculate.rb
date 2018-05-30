@@ -117,13 +117,7 @@ class Calculate
     periodogram = Array.new(dlina / 2) { 0 }
     label = Array.new(dlina / 2) { |i| i + 1 }
 
-    if vidokna == "rectangle"
-      local_stats = stats.each_with_index.map { |x, i| i < number_of_items ? x * number_of_items : x }
-    elsif vidokna == "triangle"
-      cos = Math.cos(45 * Math::PI / 180)
-      local_stats = stats[0..number_of_items / 2 - 1].each_with_index.map { |x, i| x * i / cos }
-      local_stats.concat(stats[number_of_items / 2..number_of_items].each_with_index.map { |x, i| x * (number_of_items / 2 + i) / cos })
-    end
+    local_stats = send(vidokna.to_sym, stats, number_of_items) if vidokna && !vidokna.empty?
     local_stats ||= stats
 
     number_of_periods.times do |i|
@@ -150,18 +144,36 @@ class Calculate
   end
 
   private
-  def rectangle
-    local_stats = stats.dup
-    last_point = local_stats.count # сторона - половина длины набора
-
-    return 
+  def rectangle(stats, number_of_items)
+    return stats.map { |x| x * 1 }
   end
 
-  def triangle
-    local_stats = stats.dup
-    last_point = local_stats.count # катет - полная длины набора (равнобедренный треугольник)
-    cos = Math.cos(45 * Math::PI / 180)
+  def triangle(stats, number_of_items)
+    return stats.each_with_index.map { |x, i| x * barlet_function(i, number_of_items) }
+  end
 
-    return spectrum_and_graph()
+  def hamming(stats, number_of_items)
+    return stats.each_with_index.map { |x, i| x * hamming_function(i, number_of_items)  }
+  end
+
+  def blackman(stats, number_of_items)
+    return stats.each_with_index.map { |x, i| x * blackman_function(i, number_of_items)  }
+  end
+
+  def hamming_function(i, n)
+    return 0.53836 - 0.46164 * Math.cos(2 * Math::PI * i / (n - 1))
+  end
+
+  def barlet_function(i, n)
+    a = (n - 1) / 2
+    return 1 - ((n.to_f / a) - 1).abs
+  end
+
+  def blackman_function(i, n)
+    alpha = 0.16
+    a0 = (1 - alpha) / 2
+    a1 = 1 / 2
+    a2 = alpha / 2
+    return a0 - a1 * Math.cos(2 * Math::PI * i / (n - 1)) + a2 * Math.cos(4 * Math::PI * i / (n - 1))
   end
 end

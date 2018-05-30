@@ -28,7 +28,7 @@
 				<input type="checkbox" class="someSwitchOptionSuccess" id="tab-spectre" data-tab-name="tab-spectre" checked> 
 				<label for="tab-spectre" class="label-success"></label>
 			</div>
-			<div class="checkbox-label">Спектр</div>
+			<div class="checkbox-label">Модуль ДПФ</div>
 		</div>
 		<div class="field col-md-6">
 			<div class="material-switch">
@@ -49,7 +49,7 @@
 				<input type="checkbox" class="someSwitchOptionSuccess" id="tab-periodgramma" data-tab-name="tab-periodgramma" checked> 
 				<label for="tab-periodgramma" class="label-success"></label>
 			</div>
-			<div class="checkbox-label">Периодограмма</div>
+			<div class="checkbox-label">Энергетический спектр</div>
 		</div>
 	</div>
 
@@ -77,7 +77,7 @@
 			<% end %>
 		</div>
 
-		<div class="row menu-option col-md-12 m-b-30">
+		<div class="row menu-option mmp col-md-12 m-b-30">
 			<h3 class="text-left">Дополнительные параметры</h3>
 			<div class="form-group col-md-5 additional-form">
 				<label>Длина секции</label>
@@ -93,7 +93,7 @@
 			</div>
 			<div class="form-group col-md-5 additional-form">
 				<label>Вид окна</label><br/>
-				<%= f.select :vidokna, [["Квадрат", "rectangle"], ["Треугольник", "triangle"]], {include_blank: true}, { class: "form-control" } %>
+				<%= f.select :vidokna, [["Прямоугольное", "rectangle"], ["Треугольное", "triangle"], ["Хэмминга", "hamming"], ["Блэкмана", "blackman"]], {include_blank: true}, { class: "form-control" } %>
 			</div>
 		</div>
 	<% end %>

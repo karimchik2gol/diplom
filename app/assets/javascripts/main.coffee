@@ -1,7 +1,7 @@
 # CHARTS
 # Input Data Chart
-@idc = (inputLabels, inputNumbers, mean, standart_deviation, up_standart_deviation) ->
-  ctx = document.getElementById('inputData').getContext('2d')
+@idc = (inputLabels, inputNumbers, id, mean, standart_deviation, up_standart_deviation) ->
+  ctx = document.getElementById(id).getContext('2d')
   numberOfPointsRadiusSize = 3 - Math.log10(inputNumbers.length)
   chart = new Chart(ctx,
    type: 'line'
@@ -373,3 +373,6 @@ $(document).ready ->
     else
       item.hide()
     return
+
+  $('.mmp').change ->
+    $('.tab-periodgramma').remove();
