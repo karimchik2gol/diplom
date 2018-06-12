@@ -13,7 +13,7 @@ class MainController < ApplicationController
     path = params["file-0"].path
     if path.include?('.') && path.split('.')[-1] == 'txt'
       @file = File.open(params["file-0"].path).read.gsub(" ", "").gsub("\n", "")
-      return true if @file.match(/^([\-\+]?[0-9]*(\.[0-9]+)?+,)+[\-\+]?[0-9]*(\.[0-9]+)?$/)
+      return true #if @file.match(/^([\-\+]?[0-9]*(\.[0-9]+)?+,)+[\-\+]?[0-9]*(\.[0-9]+)?$/)
     end
     return false
   end
