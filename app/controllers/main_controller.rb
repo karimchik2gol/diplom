@@ -1,3 +1,4 @@
+#coding: UTF-8
 class MainController < ApplicationController
   before_action {
   	@attributes = Calculate::DATA_ATTRIBUTE_NAMES
@@ -8,8 +9,23 @@ class MainController < ApplicationController
   before_action :set_calculate, only: [:spectre, :histograma, :correlation, :periodogramma, :mmp]
 
 
+  def validate_file
+    path = params["file-0"].path
+    if path.include?('.') && path.split('.')[-1] == 'txt'
+      @file = File.open(params["file-0"].path).read.gsub(" ", "").gsub("\n", "")
+      puts @file
+      return true if @file.match(/^([\-\+]?[0-9]*(\.[0-9]+)?+,)+[\-\+]?[0-9]*(\.[0-9]+)?$/)
+    end
+    return false
+  end
+
   def convert_file_to_numbers
-    @input_numbers = File.open(params["file-0"].path).read.split(',').map { |obj| obj.to_i }
+    if validate_file
+      @input_numbers = @file.split(',').map { |obj| obj.to_i }
+    else
+      error_message = 'Ваш текущий файл имеет не правильный формат или расширение.'
+      render json: error_message.to_json, status: 404
+    end
   end
 
   def set_calculate
@@ -68,7 +84,6 @@ class MainController < ApplicationController
 
   def periodogramma
     data = params[:data]
-    puts data
     @periodgramma, @periodgramma_label = @calc.periodgramma(data[:dlina].to_i, data[:smechenie].to_i, data[:dlinabpf].to_i, data[:vidokna])
     render partial: "periodgramma"
   end

@@ -262,7 +262,7 @@ file = null
     showAlert('.file-upload-container .alert-danger')
 
 @tabClick = (ths, url) ->
-  if file
+  if file || $(ths).attr("id")
     ths = $(ths);
     clsName = '.' + ths.data('tab-name')
     $('.tabs .btn-primary').removeClass('btn-primary')
@@ -278,11 +278,26 @@ file = null
       message: 'Добавьте файл для доступа к данной странице'
       type: 'type-warning'
 
-     
+get_and_delete_names = (name, data) ->
+  name.each ->
+    data.delete $(this).attr('name')
+    return
+  return data
+
+clean_unwanted_data = (url, data) ->
+  if url != "periodogramma"
+    data = get_and_delete_names($(".form-control[name*='data['"), data)
+  if url != "statistic"
+    data = get_and_delete_names($("input[name*='attr['"), data)
+
+  return data
+
 send_query = (url, clsName) ->
   $("#popup").show(0)
   data = new FormData(document.querySelector('form'))
   data.append 'file-0', file
+
+  data = clean_unwanted_data(url, data)
   
   $.ajax
     url: url
@@ -292,9 +307,18 @@ send_query = (url, clsName) ->
     processData: false
     method: 'POST'
     success: (data) ->
-      $("#popup").hide(0)
       $('.tabs-content').append(data)
       $(clsName).addClass 'active-tab-content'
+    error: (data) ->
+      file = null
+      $('.upload').val('')
+      tabClick($("#main_tab"))
+      BootstrapDialog.show
+        title: 'Предупреждение'
+        message: data.responseJSON
+        type: 'type-warning'
+    complete: ->
+      $("#popup").hide(0)
   return
 
 

@@ -55,9 +55,9 @@
 
 	<h3 class="text-left">Выбор отображения статистических параметров</h3>
 	<%= form_with scope: :data, url: create_main_path, class: 'input-data-form' do |f| %>	
-		<div class="field">
+		<!-- <div class="field">
 			<%= f.hidden_field :input, id: 'hidden-data' %>
-		</div>
+		</div> -->
 
 		<div class="row">
 			<%= fields_for :attr do |checkbox_attribute| %>
