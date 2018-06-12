@@ -144,6 +144,5 @@ class Mysignal
 		(n / 2).times.each { |i| b << a[i * 2 + 1] }
 		(n / 2).times.each { |i| a[i] = a[i * 2] }
 		(n / 2).times.each { |i| a[i + n / 2] = b[i] }
-		return a
 	end
 end

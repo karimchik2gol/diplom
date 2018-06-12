@@ -112,7 +112,6 @@ class Calculate
 
   def periodgramma(dlina, smechenie, dlinabpf, vidokna)
     number_of_items = stats.count
-    puts number_of_items
     number_of_periods = number_of_items / dlina
     periodogram = Array.new(dlina / 2) { 0 }
     label = Array.new(dlina / 2) { |i| i + 1 }
