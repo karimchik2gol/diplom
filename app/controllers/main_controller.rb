@@ -13,7 +13,8 @@ class MainController < ApplicationController
     path = params["file-0"].path
     if path.include?('.') && path.split('.')[-1] == 'txt'
       @file = File.open(params["file-0"].path).read.gsub(" ", "").gsub("\n", "")
-      return true #if @file.match(/^([\-\+]?[0-9]*(\.[0-9]+)?+,)+[\-\+]?[0-9]*(\.[0-9]+)?$/)
+      @txt = @file
+      return true if @file.match(/^([\-\+]?[0-9]*(\.[0-9]+)?+,)+[\-\+]?[0-9]*(\.[0-9]+)?$/)
     end
     return false
   end
@@ -23,7 +24,7 @@ class MainController < ApplicationController
       @input_numbers = @file.split(',').map { |obj| obj.to_i }
     else
       error_message = 'Ваш текущий файл имеет не правильный формат или расширение.'
-      render json: error_message.to_json, status: 404
+      render json: @txt.to_json, status: 404
     end
   end
 
