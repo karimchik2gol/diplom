@@ -12,7 +12,7 @@ class MainController < ApplicationController
   def validate_file
     path = params["file-0"].path
     if path.include?('.') && path.split('.')[-1] == 'txt'
-      @file = File.open(params["file-0"].path).read.gsub(" ", "").gsub("\n", "")
+      @file = File.open(params["file-0"].path).read.gsub(" ", "").gsub("\n", "").gsub("\r", "")
       @txt = @file
       return true if @file.match(/^([\-\+]?[0-9]*(\.[0-9]+)?+,)+[\-\+]?[0-9]*(\.[0-9]+)?$/)
     end
