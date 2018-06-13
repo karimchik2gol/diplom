@@ -73,15 +73,15 @@ class Calculate
     max = stats.max
     raznica = max - min
     length = stats.count
-    count_of_rows = length > 100 ? 10 : 5 + length / 20 
-
-    count_of_rows.times do |current_row|
-      condition_down = min + raznica * current_row / count_of_rows
-      condition_up = min + raznica * (current_row + 1) / count_of_rows
-      numbers << (stats.select { |x| x if x >= condition_down && (x < condition_up || current_row == count_of_rows - 1) }).count # check if last then automatically add everything that higher that down condition
+    n = (1 + 3.322 * Math.log(length)).to_i
+    interval = raznica.to_f / n
+    n.times do |current_row|
+      condition_down = min + current_row * interval
+      condition_up = min + (current_row + 1) * interval
+      numbers << (stats.select { |x| x if x >= condition_down && (x < condition_up || current_row == n - 1) }).count # check if last then automatically add everything that higher that down condition
       labels << "#{condition_down} - #{condition_up}"
     end
-
+    
     return numbers, labels
   end
 

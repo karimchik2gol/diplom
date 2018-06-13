@@ -142,6 +142,11 @@
          autoSkip: true
          maxTicksLimit: 10
       }]
+      yAxes: [{
+        ticks: {
+            beginAtZero: true
+        }
+      }]
      }
      pan: {
       enabled: true
