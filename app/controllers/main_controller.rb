@@ -12,7 +12,7 @@ class MainController < ApplicationController
   def validate_file
     path = params["file-0"].path
     if path.include?('.') && path.split('.')[-1] == 'txt'
-      @file = File.open(params["file-0"].path).read.gsub(" ", "").gsub("\n", "").gsub("\r", "")
+      @file = File.open(params["file-0"].path).read.strip
       @txt = @file
       return true if @file.match(/^([\-\+]?[0-9]*(\.[0-9]+)?+,)+[\-\+]?[0-9]*(\.[0-9]+)?$/)
     end
@@ -21,10 +21,10 @@ class MainController < ApplicationController
 
   def convert_file_to_numbers
     if validate_file
-      @input_numbers = @file.split(',').map { |obj| obj.to_i }
+      @input_numbers = @file.split(',').map { |obj| obj.to_f }
     else
       error_message = 'Ваш текущий файл имеет не правильный формат или расширение.'
-      render json: @txt.to_json, status: 404
+      render json: error_message.to_json, status: 404
     end
   end
 
@@ -50,7 +50,6 @@ class MainController < ApplicationController
     perm_par = permitted_params.to_h.delete_if { |key, value| value == "0" }.map {|k,v| k}
     calc = Calculate.new(@input_numbers.dup, perm_par)
     @results = calc.calculate # Calculate statistic
-    puts @results.count
     res = @results.to_a
     res.each {|x| res.index(x).even? ? @l << x : @r << x}
     render partial: "statistic"
